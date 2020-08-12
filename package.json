@@ -1,0 +1,16 @@
+{
+  "name": "foto-gallary",
+  "version": "1.0.0",
+  "description": "An Online photo assessment application, assessement by other users. foto-gallary ",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.28",
+    "path": "^0.12.7"
+  }
+}
