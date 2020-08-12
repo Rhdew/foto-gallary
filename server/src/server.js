@@ -1,6 +1,6 @@
-const express = require('express');
-const path = require('path');
-const mongoose = require('mongoose');
+import express from 'express';
+import path from 'path';
+import mongoose from 'mongoose';
 
 let MONGOOSE_URI = "mongodb+srv://root:root@fotogallarycluster.v6wra.mongodb.net/<Dev>?retryWrites=true&w=majority" ;
 mongoose.connect(MONGOOSE_URI,{

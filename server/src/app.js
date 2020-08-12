@@ -1,5 +1,5 @@
-const app =  require('./server');
+import app from './server';
 let port = process.env.PORT || 3000;
 app.listen(port , ()=>{
-    console.log('server ready at https://localhost:3000');
+    console.log('server ready at http://localhost:3000');
 });
