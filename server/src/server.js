@@ -24,8 +24,8 @@ let app = express();
 const publicPath = path.join(__dirname + '/../../public');
 
 app.use(express.static(publicPath));
-module.exports = app.get('/', (req,res)=>{
+app.get('/', (req,res)=>{
     res.sendFile(`${publicPath}/index.html`)
 });
 
-
+export {app as default}
