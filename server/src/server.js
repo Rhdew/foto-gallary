@@ -1,8 +1,16 @@
 import express from 'express';
 import path from 'path';
 import mongoose from 'mongoose';
+import { ApolloServer } from 'apollo-server-express';
+import schema from './graphql/schema/schema.graphql';
+import resolvers from './graphql/resolvers';
 
 let MONGOOSE_URI = "mongodb+srv://root:root@fotogallarycluster.v6wra.mongodb.net/<Dev>?retryWrites=true&w=majority" ;
+
+const typeDefs = [schema];
+
+const server = new ApolloServer({ typeDefs, resolvers });
+
 mongoose.connect(MONGOOSE_URI,{
     useNewUrlParser: true,
     reconnectTries: 30, // Retry up to 30 times
@@ -21,6 +29,9 @@ mongoose.connect(MONGOOSE_URI,{
   });
 
 let app = express();
+
+server.applyMiddleware({ app, path: '/gql' });
+
 const publicPath = path.join(__dirname + '/../../public');
 
 app.use(express.static(publicPath));
