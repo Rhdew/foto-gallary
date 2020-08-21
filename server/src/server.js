@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import mongoose from 'mongoose';
 import { ApolloServer } from 'apollo-server-express';
 import schema from './graphql/schema/schema.graphql';
@@ -25,18 +24,11 @@ mongoose.connect(MONGOOSE_URI,{
     console.log('connected to database');
   })
   .catch(() => {
-    console.log('error');
+    console.log('error in db connection');
   });
 
 let app = express();
 
-server.applyMiddleware({ app, path: '/gql' });
-
-const publicPath = path.join(__dirname + '/../../public');
-
-app.use(express.static(publicPath));
-app.get('/', (req,res)=>{
-    res.sendFile(`${publicPath}/index.html`)
-});
+server.applyMiddleware({ app, path: '/graphql' });
 
 export {app as default}
