@@ -1,3 +1,10 @@
+#import "./types/user.graphql"
+
 type Query {
     hello: String
+}
+
+type Mutation {
+    hi: String
+    createUser(user: UserInput): User
 }
