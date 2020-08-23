@@ -3,6 +3,7 @@ import user from './user'
 const resolvers = {
     Query: {
         hello: () => `Hello world!`,
+        login: user.login,
     },
 
     Mutation: {
