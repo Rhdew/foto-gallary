@@ -1,14 +1,34 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
+import jwt from 'jsonwebtoken';
+import 'dotenv/config';
 import schema from './graphql/schema/schema.graphql';
 import resolvers from './graphql/resolvers';
 
-let MONGOOSE_URI = "mongodb+srv://root:root@fotogallarycluster.v6wra.mongodb.net/<Dev>?retryWrites=true&w=majority" ;
-
+let MONGOOSE_URI = process.env.MONGOOSE_URI ;
 const typeDefs = [schema];
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const VerifyJwt = async(req) =>{
+  const token = req.headers.authorization;
+
+  if (token) {
+    try {
+      return await jwt.verify(token, process.env.JWT_SECRET_KEY);
+    } catch (e) {
+      throw new AuthenticationError('Your sessions has expired.');
+    }
+  }
+  return null;
+}
+
+const server = new ApolloServer({ typeDefs, 
+  resolvers,
+  context: async ({ req })=>{
+    const user = await VerifyJwt(req);
+    return { user }
+  }
+ });
 
 mongoose.connect(MONGOOSE_URI,{
     useNewUrlParser: true,
