@@ -2,6 +2,7 @@
 
 type Query {
     hello: String
+    login(username: String, password: String): String!
 }
 
 type Mutation {
