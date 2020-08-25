@@ -6,7 +6,10 @@
   "scripts": {
     "dev-server": "rm -rf ./node_modules/.cache/babel-loader && rm -rf ./node_modules/.cache/@babel && nodemon --exec babel-node server/src/app.js",
     "start": "nodemon --exec  babel-node server/src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write '**/*.js'",
+    "lint": "eslint '**/*.js' --quiet",
+    "lint-fix": "npm run lint -- --fix"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +29,12 @@
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
     "babel-cli": "^6.26.0",
-    "babel-plugin-import-graphql": "^2.7.0"
+    "babel-plugin-import-graphql": "^2.7.0",
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "prettier": "^2.1.0"
   }
 }
