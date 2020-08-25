@@ -4,6 +4,7 @@ const resolvers = {
     Query: {
         hello: () => `Hello world!`,
         login: user.login,
+        profile: user.profile,
     },
 
     Mutation: {

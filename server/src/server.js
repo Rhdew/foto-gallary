@@ -11,10 +11,9 @@ const typeDefs = [schema];
 
 const VerifyJwt = async(req) =>{
   const token = req.headers.authorization;
-
   if (token) {
     try {
-      return await jwt.verify(token, process.env.JWT_SECRET_KEY);
+      return jwt.verify(token, process.env.JWT_SECRET_KEY);
     } catch (e) {
       throw new AuthenticationError('Your sessions has expired.');
     }
