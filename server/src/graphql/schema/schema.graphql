@@ -8,6 +8,7 @@ type Query {
 
 type Mutation {
   hi: String
-  createUser(user: UserInput): User
+  createUser(user: UserInput): User!
   followUser(username: String): User
+  unfollowUser(username: String): User
 }

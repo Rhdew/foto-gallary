@@ -1,19 +1,25 @@
 import mongoose, { Schema } from 'mongoose';
 
-const userFollowingSchema = new mongoose.Schema({
+const userFollowingSchema = new mongoose.Schema(
+  {
     following: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
     followers: {
-        type: Schema.Types.ObjectId,
-        ref:'User'
-    }
-},{timestamps:true});
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  },
+  { timestamps: true },
+);
 
-userFollowingSchema.index({
-    following:1,
-    followers:1
-}, { unique:true });
+userFollowingSchema.index(
+  {
+    following: 1,
+    followers: 1,
+  },
+  { unique: true },
+);
 
-module.exports = mongoose.model('UserFollowing',userFollowingSchema);
+module.exports = mongoose.model('UserFollowing', userFollowingSchema);

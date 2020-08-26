@@ -11,6 +11,7 @@ const resolvers = {
     hi: () => 'hey',
     createUser: user.createUser,
     followUser: user.followUser,
+    unfollowUser: user.unfollowUser,
   },
 };
 

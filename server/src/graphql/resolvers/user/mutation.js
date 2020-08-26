@@ -1,8 +1,8 @@
 import validator from 'validator';
 import bcrypt from 'bcrypt';
+import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import User from '../../../models/user';
 import UserFollowing from '../../../models/userFollowing';
-import {UserInputError, AuthenticationError} from 'apollo-server-express';
 
 const createUser = async (parent, args) => {
   if (!validator.isAlphanumeric(args.user.username)) {
@@ -34,36 +34,70 @@ const createUser = async (parent, args) => {
   });
 };
 
-const followUser = async (parent,args,{ user }) => {
-    if(!user){
-        throw new AuthenticationError('user is not log in');
-    }
+const followUser = async (parent, args, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('user is not log in');
+  }
 
-    const userTOFollow = await User.findOne({ username: args.username});
-    if(!userTOFollow){
-        throw new UserInputError('user does not found by given username');
-    }
+  const userTOFollow = await User.findOne({ username: args.username });
+  if (!userTOFollow) {
+    throw new UserInputError('user does not found by given username');
+  }
 
-    const currentUser = await User.findOne({ username: user.username});
+  const currentUser = await User.findOne({ username: user.username });
 
-    const isAlreadyFollowing = await UserFollowing.findOne({ 
-        follower: currentUser.id, 
-        following: userTOFollow._id
-    });
-    if(isAlreadyFollowing){
-        throw new UserInputError('user already followed');
-    }
+  const isAlreadyFollowing = await UserFollowing.findOne({
+    followers: currentUser.id,
+    following: userTOFollow.id,
+  });
+  if (isAlreadyFollowing) {
+    throw new UserInputError('user already followed');
+  }
 
-    await UserFollowing.create({ follower: currentUser.id, following: userTOFollow._id});
-    
-    return User.findOneAndUpdate(
-        {username: user.username},
-        {$push: {following: userTOFollow._id}},
-        {new:true}
-    );
-}
+  await UserFollowing.create({ followers: currentUser.id, following: userTOFollow.id });
+
+  await User.findOneAndUpdate(
+    { username: user.username },
+    { $push: { following: userTOFollow.id } },
+  );
+
+  return userTOFollow;
+};
+
+const unfollowUser = async (parent, args, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('user is not login');
+  }
+  const currentUser = await User.findOne({ username: user.username });
+
+  const userToUnfollow = await User.findOne({ username: args.username });
+  if (!userToUnfollow) {
+    throw new UserInputError('user is not found by given username');
+  }
+
+  const isUserFollowed = await UserFollowing.findOne({
+    followers: currentUser.id,
+    following: userToUnfollow.id,
+  });
+  if (!isUserFollowed) {
+    throw new UserInputError('User does not followed by current user');
+  }
+
+  await UserFollowing.findOneAndDelete({
+    followers: currentUser.id,
+    following: userToUnfollow.id,
+  });
+
+  await User.findOneAndUpdate(
+    { username: user.username },
+    { $pull: { following: userToUnfollow.id } },
+  );
+
+  return userToUnfollow;
+};
 
 module.exports = {
   createUser,
   followUser,
+  unfollowUser,
 };
