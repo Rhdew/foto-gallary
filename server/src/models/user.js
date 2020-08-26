@@ -1,4 +1,4 @@
-import mongoose, { Schema, mongo } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const userSchema = new Schema({
     username: {
@@ -18,6 +18,10 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }],
 });
 
 // export let User = mongoose.model('user', userSchema);

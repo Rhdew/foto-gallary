@@ -10,6 +10,7 @@ const resolvers = {
     Mutation: {
         hi: () => 'hey',
         createUser: user.createUser,
+        followUser: user.followUser,
     }
     
 }

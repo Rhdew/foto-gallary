@@ -1,8 +1,9 @@
 import { login, profile } from './query';
-import { createUser } from './mutation';
+import { createUser, followUser } from './mutation';
 
 module.exports = {
     createUser,
     login,
     profile,
+    followUser,
 }
