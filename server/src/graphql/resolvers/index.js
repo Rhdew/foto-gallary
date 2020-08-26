@@ -5,6 +5,8 @@ const resolvers = {
     hello: () => `Hello world!`,
     login: user.login,
     profile: user.profile,
+    getCountOfFollowers: user.getCountOfFollowers,
+    getCountOfFollowing: user.getCountOfFollowing,
   },
 
   Mutation: {

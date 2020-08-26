@@ -1,5 +1,5 @@
 /* eslint-disable import/named */
-import { login, profile } from './query';
+import { login, profile, getCountOfFollowers, getCountOfFollowing } from './query';
 import { createUser, followUser, unfollowUser } from './mutation';
 
 module.exports = {
@@ -8,4 +8,6 @@ module.exports = {
   profile,
   followUser,
   unfollowUser,
+  getCountOfFollowers,
+  getCountOfFollowing,
 };

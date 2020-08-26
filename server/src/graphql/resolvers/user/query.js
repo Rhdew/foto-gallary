@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
 import User from '../../../models/user';
+import UserFollowing from '../../../models/userFollowing';
 
 const login = async (parent, args) => {
   if (validator.isEmpty(args.username, { ignore_whitespace: true })) {
@@ -60,7 +61,31 @@ const profile = async (parent, args, { user }, info) => {
   });
 };
 
+const getCountOfFollowers = async (parent, args, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('You are not logged in');
+  }
+  const currentUser = await User.findOne({ username: user.username });
+
+  const followerCount = await UserFollowing.countDocuments({ following: currentUser.id });
+
+  return followerCount;
+};
+
+const getCountOfFollowing = async (parent, args, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('You are not logged in');
+  }
+
+  const currentUser = await User.findOne({ username: user.username });
+  const followingCount = await UserFollowing.countDocuments({ followers: currentUser.id });
+
+  return followingCount;
+};
+
 module.exports = {
   login,
   profile,
+  getCountOfFollowers,
+  getCountOfFollowing,
 };

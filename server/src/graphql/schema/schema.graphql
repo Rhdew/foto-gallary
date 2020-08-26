@@ -4,6 +4,8 @@ type Query {
   hello: String
   login(username: String, password: String): String!
   profile: User!
+  getCountOfFollowers: String
+  getCountOfFollowing: String
 }
 
 type Mutation {
