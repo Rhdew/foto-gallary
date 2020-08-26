@@ -1,6 +1,5 @@
 import validator from 'validator';
 import bcrypt from 'bcrypt';
-import { UserInputError } from 'apollo-server-express';
 import User from '../../../models/user';
 import UserFollowing from '../../../models/userFollowing';
 import {UserInputError, AuthenticationError} from 'apollo-server-express';
