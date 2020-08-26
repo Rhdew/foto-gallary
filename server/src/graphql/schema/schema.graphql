@@ -1,13 +1,13 @@
 #import "./types/user.graphql"
 
 type Query {
-    hello: String
-    login(username: String, password: String): String!
-    profile: User!
+  hello: String
+  login(username: String, password: String): String!
+  profile: User!
 }
 
 type Mutation {
-    hi: String
-    createUser(user: UserInput): User
-    followUser(username: String): User
+  hi: String
+  createUser(user: UserInput): User
+  followUser(username: String): User
 }

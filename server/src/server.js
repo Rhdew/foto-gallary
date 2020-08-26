@@ -6,10 +6,10 @@ import 'dotenv/config';
 import schema from './graphql/schema/schema.graphql';
 import resolvers from './graphql/resolvers';
 
-let MONGOOSE_URI = process.env.MONGOOSE_URI ;
+const { MONGOOSE_URI } = process.env;
 const typeDefs = [schema];
 
-const VerifyJwt = async(req) =>{
+const VerifyJwt = async (req) => {
   const token = req.headers.authorization;
   if (token) {
     try {
@@ -19,17 +19,19 @@ const VerifyJwt = async(req) =>{
     }
   }
   return null;
-}
+};
 
-const server = new ApolloServer({ typeDefs, 
+const server = new ApolloServer({
+  typeDefs,
   resolvers,
-  context: async ({ req })=>{
+  context: async ({ req }) => {
     const user = await VerifyJwt(req);
-    return { user }
-  }
- });
+    return { user };
+  },
+});
 
-mongoose.connect(MONGOOSE_URI,{
+mongoose
+  .connect(MONGOOSE_URI, {
     useNewUrlParser: true,
     reconnectTries: 30, // Retry up to 30 times
     reconnectInterval: 500, // Reconnect every 500ms
@@ -46,8 +48,8 @@ mongoose.connect(MONGOOSE_URI,{
     console.log('error in db connection');
   });
 
-let app = express();
+const app = express();
 
 server.applyMiddleware({ app, path: '/graphql' });
 
-export {app as default}
+export { app as default };
