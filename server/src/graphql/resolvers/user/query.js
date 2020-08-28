@@ -13,7 +13,7 @@ const login = async (parent, args) => {
     throw new UserInputError('username can not be empty');
   }
 
-  const user = await User.findOne({ username: args.username });
+  const user = await User.findOne({ username: args.username }).exec();
   if (!user) {
     throw new UserInputError('username is wrong');
   }
@@ -65,9 +65,9 @@ const getCountOfFollowers = async (parent, args, { user }) => {
   if (!user) {
     throw new AuthenticationError('You are not logged in');
   }
-  const currentUser = await User.findOne({ username: user.username });
+  const currentUser = await User.findOne({ username: user.username }).exec();
 
-  const followerCount = await UserFollowing.countDocuments({ following: currentUser.id });
+  const followerCount = await UserFollowing.countDocuments({ following: currentUser.id }).exec();
 
   return followerCount;
 };
@@ -77,10 +77,38 @@ const getCountOfFollowing = async (parent, args, { user }) => {
     throw new AuthenticationError('You are not logged in');
   }
 
-  const currentUser = await User.findOne({ username: user.username });
-  const followingCount = await UserFollowing.countDocuments({ followers: currentUser.id });
+  const currentUser = await User.findOne({ username: user.username }).exec();
+  const followingCount = await UserFollowing.countDocuments({ followers: currentUser.id }).exec();
 
   return followingCount;
+};
+
+const getFollowers = async (parent, args, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('You are not logged in');
+  }
+
+  const currentUser = await User.findOne({ username: user.username }).exec();
+
+  let followerList = await UserFollowing.find({ following: currentUser.id })
+    .populate('followers', 'username email')
+    .exec();
+
+  followerList = followerList.map((data) => data.followers);
+  return followerList;
+};
+
+const getFollowings = async (parent, args, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('You are not logged in');
+  }
+
+  const currentUser = await User.findOne({ username: user.username })
+    .populate('following')
+    .select('following')
+    .exec();
+
+  return currentUser.following;
 };
 
 module.exports = {
@@ -88,4 +116,6 @@ module.exports = {
   profile,
   getCountOfFollowers,
   getCountOfFollowing,
+  getFollowers,
+  getFollowings,
 };
