@@ -47,6 +47,7 @@ mongoose
   .catch(() => {
     console.log('error in db connection');
   });
+mongoose.set('useFindAndModify', false);
 
 const app = express();
 
