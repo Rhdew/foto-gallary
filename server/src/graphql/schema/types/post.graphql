@@ -1,0 +1,11 @@
+type Post {
+  caption: String
+  image: String
+  author: User!
+  likes: [User]
+}
+
+input CreatePostInput {
+  caption: String
+  image: Upload
+}

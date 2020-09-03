@@ -1,4 +1,5 @@
 import user from './user';
+import post from './post';
 
 const resolvers = {
   Query: {
@@ -16,6 +17,7 @@ const resolvers = {
     createUser: user.createUser,
     followUser: user.followUser,
     unfollowUser: user.unfollowUser,
+    createPost: post.createPost,
   },
 };
 

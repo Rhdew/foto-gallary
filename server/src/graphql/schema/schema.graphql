@@ -1,4 +1,5 @@
 #import "./types/user.graphql"
+#import "./types/post.graphql"
 
 type Query {
   hello: String
@@ -15,4 +16,5 @@ type Mutation {
   createUser(user: UserInput): User!
   followUser(username: String): User
   unfollowUser(username: String): User
+  createPost(post: CreatePostInput): Post!
 }
