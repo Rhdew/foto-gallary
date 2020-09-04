@@ -4,9 +4,31 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <input type="file" accept="image/*" @change="createPost" />
+    <router-view />
   </div>
 </template>
+
+<script>
+import CREATEPOST from './graphql/createPost';
+
+export default {
+  methods: {
+    async createPost({ target }) {
+      await this.$apollo.mutate({
+        mutation: CREATEPOST,
+        variables: {
+          post: {
+            caption: 'cap',
+            image: target.files[0],
+          },
+        },
+      });
+      //   console.log(res);
+    },
+  },
+};
+</script>
 
 <style>
 #app {
