@@ -16,5 +16,5 @@ type Mutation {
   createUser(user: UserInput): User!
   followUser(username: String): User
   unfollowUser(username: String): User
-  createPost(post: CreatePostInput): Post!
+  createPost(post: CreatePostInput): Post
 }

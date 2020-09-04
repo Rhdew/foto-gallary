@@ -3,11 +3,18 @@ import mongoose from 'mongoose';
 import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
+import cloudinary from 'cloudinary';
 import schema from './graphql/schema/schema.graphql';
 import resolvers from './graphql/resolvers';
 
 const { MONGOOSE_URI } = process.env;
 const typeDefs = [schema];
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const VerifyJwt = async (req) => {
   const token = req.headers.authorization;

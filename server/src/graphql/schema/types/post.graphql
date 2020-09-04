@@ -7,5 +7,5 @@ type Post {
 
 input CreatePostInput {
   caption: String
-  image: Upload
+  image: String
 }

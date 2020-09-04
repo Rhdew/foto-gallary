@@ -15,5 +15,8 @@
     "no-var": "error",
     "prefer-const": "error",
     "eqeqeq": "warn"
+  },
+  "settings": {
+    "import/extensions": [".js"]
   }
 }
