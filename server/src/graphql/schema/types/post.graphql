@@ -1,11 +1,17 @@
 type Post {
   caption: String
-  image: String
+  image: File!
   author: User!
   likes: [User]
 }
 
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
 input CreatePostInput {
   caption: String
-  image: Upload
+  image: Upload!
 }
