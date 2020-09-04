@@ -4,6 +4,8 @@ import { ApolloServer, AuthenticationError } from 'apollo-server-express';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import cloudinary from 'cloudinary';
+import cors from 'cors';
+
 import schema from './graphql/schema/schema.graphql';
 import resolvers from './graphql/resolvers';
 
@@ -57,6 +59,13 @@ mongoose
 mongoose.set('useFindAndModify', false);
 
 const app = express();
+
+const corsOptions = {
+  origin: 'http://localhost:8080',
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 server.applyMiddleware({ app, path: '/graphql' });
 
