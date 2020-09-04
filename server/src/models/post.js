@@ -8,6 +8,10 @@ const postSchema = new Schema({
     type: String,
     req: true,
   },
+  imagePublicId: {
+    type: String,
+    req: true,
+  },
   author: {
     type: Schema.Types.ObjectId,
     ref: 'User',

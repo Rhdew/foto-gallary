@@ -1,6 +1,7 @@
 type Post {
   caption: String
   image: File!
+  imagePublicId: String
   author: User!
   likes: [User]
 }
