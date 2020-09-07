@@ -1,5 +1,6 @@
 #import "./types/user.graphql"
 #import "./types/post.graphql"
+scalar Upload
 
 type Query {
   hello: String

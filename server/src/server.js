@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import { ApolloServer, AuthenticationError } from 'apollo-server-express';
+import { graphqlUploadExpress } from 'graphql-upload';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import cloudinary from 'cloudinary';
@@ -33,6 +34,7 @@ const VerifyJwt = async (req) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  uploads: false,
   context: async ({ req }) => {
     const user = await VerifyJwt(req);
     return { user };
@@ -61,11 +63,18 @@ mongoose.set('useFindAndModify', false);
 const app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:8080',
+  origin: '*',
   credentials: true,
 };
 
 app.use(cors(corsOptions));
+
+app.use(
+  graphqlUploadExpress({
+    maxFileSize: 1000000000,
+    maxFiles: 10,
+  }),
+);
 
 server.applyMiddleware({ app, path: '/graphql' });
 

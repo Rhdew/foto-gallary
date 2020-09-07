@@ -1,7 +1,10 @@
+import GraphQLUpload from 'graphql-upload';
+
 import user from './user';
 import post from './post';
 
 const resolvers = {
+  Upload: GraphQLUpload,
   Query: {
     hello: () => `Hello world!`,
     login: user.login,
