@@ -4,7 +4,8 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <input type="file" accept="image/*" @change="createPost" />
+    <input ref="file" type="file" accept="image/*" />
+    <button @click="createPost">Submit</button>
     <router-view />
   </div>
 </template>
@@ -13,18 +14,24 @@
 import CREATEPOST from './graphql/createPost';
 
 export default {
+  data() {
+    return {
+      res: null,
+    };
+  },
   methods: {
-    async createPost({ target }) {
-      await this.$apollo.mutate({
+    async createPost() {
+      console.log(this.$refs.file.files[0]);
+      this.res = await this.$apollo.mutate({
         mutation: CREATEPOST,
         variables: {
           post: {
             caption: 'cap',
-            image: target.files[0],
+            image: this.$$refs.file.files[0],
           },
         },
       });
-      //   console.log(res);
+      console.log(this.res.data.createPost);
     },
   },
 };
