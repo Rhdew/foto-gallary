@@ -15,6 +15,7 @@ type Query {
 type Mutation {
   hi: String
   createUser(user: UserInput): User!
+  uploadUserImage(image: Upload!): User
   followUser(username: String): User
   unfollowUser(username: String): User
   createPost(post: CreatePostInput): Post

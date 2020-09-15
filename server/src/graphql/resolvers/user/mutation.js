@@ -1,6 +1,7 @@
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 import { UserInputError, AuthenticationError } from 'apollo-server-express';
+import cloudinary from 'cloudinary';
 import User from '../../../models/user';
 import UserFollowing from '../../../models/userFollowing';
 
@@ -36,7 +37,7 @@ const createUser = async (parent, args) => {
 
 const followUser = async (parent, args, { user }) => {
   if (!user) {
-    throw new AuthenticationError('user is not log in');
+    throw new AuthenticationError('you are not logged in');
   }
 
   const userTOFollow = await User.findOne({ username: args.username });
@@ -66,7 +67,7 @@ const followUser = async (parent, args, { user }) => {
 
 const unfollowUser = async (parent, args, { user }) => {
   if (!user) {
-    throw new AuthenticationError('user is not login');
+    throw new AuthenticationError('you are not logged in');
   }
   const currentUser = await User.findOne({ username: user.username });
 
@@ -96,8 +97,43 @@ const unfollowUser = async (parent, args, { user }) => {
   return userToUnfollow;
 };
 
+const uploadUserImage = async (parent, { image }, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('you are not logged in');
+  }
+
+  const { createReadStream } = await image.file;
+  const stream = createReadStream();
+  let updatedUser;
+
+  try {
+    const res = await new Promise((resolve, reject) => {
+      stream.pipe(
+        cloudinary.v2.uploader.upload_stream((error, result) => {
+          if (error) {
+            reject(error);
+          }
+
+          resolve(result);
+        }),
+      );
+    });
+
+    updatedUser = await User.findOneAndUpdate(
+      { username: user.username },
+      { image: res.secure_url, imagePublicId: res.public_id },
+      { new: true },
+    );
+  } catch (err) {
+    console.log(err);
+  }
+  // console.log(updatedUser);
+  return updatedUser;
+};
+
 module.exports = {
   createUser,
   followUser,
   unfollowUser,
+  uploadUserImage,
 };

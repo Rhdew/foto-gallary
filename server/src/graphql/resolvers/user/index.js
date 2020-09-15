@@ -7,7 +7,7 @@ import {
   getFollowers,
   getFollowings,
 } from './query';
-import { createUser, followUser, unfollowUser } from './mutation';
+import { createUser, followUser, unfollowUser, uploadUserImage } from './mutation';
 
 module.exports = {
   createUser,
@@ -19,4 +19,5 @@ module.exports = {
   getCountOfFollowing,
   getFollowers,
   getFollowings,
+  uploadUserImage,
 };

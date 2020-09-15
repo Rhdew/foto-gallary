@@ -27,7 +27,7 @@ export default {
         variables: {
           post: {
             caption: 'cap',
-            image: this.$$refs.file.files[0],
+            image: this.$refs.file.files[0],
           },
         },
       });

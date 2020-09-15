@@ -18,6 +18,7 @@ const resolvers = {
   Mutation: {
     hi: () => 'hey',
     createUser: user.createUser,
+    uploadUserImage: user.uploadUserImage,
     followUser: user.followUser,
     unfollowUser: user.unfollowUser,
     createPost: post.createPost,
