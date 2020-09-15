@@ -13,6 +13,7 @@ const resolvers = {
     getCountOfFollowing: user.getCountOfFollowing,
     getFollowers: user.getFollowers,
     getFollowings: user.getFollowings,
+    getAllPosts: post.getAllPosts,
   },
 
   Mutation: {
