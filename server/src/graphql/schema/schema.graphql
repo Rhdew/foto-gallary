@@ -10,6 +10,7 @@ type Query {
   getCountOfFollowing: String
   getFollowers: [User]
   getFollowings: [User]
+  getAllPosts: [Post]
 }
 
 type Mutation {

@@ -27,13 +27,14 @@ const createPost = async (parent, { post }, { user }) => {
         }),
       );
     });
-
     createdPost = await Post.create({
       caption: post.caption,
       image: res.secure_url,
       imagePublicId: res.public_id,
       author: currentUser.id,
     });
+
+    await User.findByIdAndUpdate(currentUser.id, { $push: { posts: createdPost.id } });
   } catch (err) {
     console.log(err);
   }
