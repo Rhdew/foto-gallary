@@ -18,6 +18,14 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+    req: true,
+  },
+  imagePublicId: {
+    type: String,
+    req: true,
+  },
   following: [
     {
       type: Schema.Types.ObjectId,
