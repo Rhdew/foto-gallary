@@ -20,4 +20,5 @@ type Mutation {
   followUser(username: String): User
   unfollowUser(username: String): User
   createPost(post: CreatePostInput): Post
+  deletePost(post: DeletePostInput): String
 }

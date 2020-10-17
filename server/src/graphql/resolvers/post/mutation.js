@@ -1,4 +1,4 @@
-import { AuthenticationError } from 'apollo-server-express';
+import { AuthenticationError, UserInputError } from 'apollo-server-express';
 import cloudinary from 'cloudinary';
 import User from '../../../models/user';
 import Post from '../../../models/post';
@@ -42,6 +42,38 @@ const createPost = async (parent, { post }, { user }) => {
   return createdPost;
 };
 
+const deletePost = async (parent, { post }, { user }) => {
+  if (!user) {
+    throw new AuthenticationError('you are not logged in');
+  }
+  let deletedPost;
+  const currentUser = await User.findOne({ username: user.username });
+
+  try {
+    await new Promise((resolve, reject) => {
+      cloudinary.v2.uploader.distroy(post.imagePublicId, (error, result) => {
+        if (error) {
+          reject(error);
+        } else resolve(result);
+      });
+    });
+    deletedPost = await Post.findOneAndRemove({ imagePublicId: post.imagePublicId }, function (
+      err,
+      docs,
+    ) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('removed post', docs);
+      }
+    });
+
+    await User.findByIdAndUpdate(currentUser.id, { $pull: { posts: deletedPost.id } });
+  } catch (err) {
+    console.log(err);
+  }
+};
 module.exports = {
   createPost,
+  deletePost,
 };

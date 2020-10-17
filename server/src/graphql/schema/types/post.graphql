@@ -16,3 +16,7 @@ input CreatePostInput {
   caption: String
   image: Upload!
 }
+
+input DeletePostInput {
+  imagePublicId: String
+}

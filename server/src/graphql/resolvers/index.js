@@ -23,6 +23,7 @@ const resolvers = {
     followUser: user.followUser,
     unfollowUser: user.unfollowUser,
     createPost: post.createPost,
+    deletePost: post.deletePost,
   },
 };
 
