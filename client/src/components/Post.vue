@@ -17,6 +17,7 @@
           <label for="image">Image</label>
           <input type="file" id="image" required @change="onChange" />
         </div>
+        <span class="form-error">{{ error }}</span>
         <div>
           <input class="submit-btn" type="submit" @click="createPost" value="POST" />
         </div>
@@ -33,27 +34,44 @@ export default {
     return {
       res: null,
       caption: '',
+      error: '',
       selectedFile: null,
+      valid: false,
     };
   },
   methods: {
     onChange(event) {
-      // eslint-disable-next-line prefer-destructuring
-      this.selectedFile = event.target.files[0];
-      console.log(this.selectedFile);
+      if (this.isValid(event.target.files[0])) {
+        // eslint-disable-next-line prefer-destructuring
+        this.selectedFile = event.target.files[0];
+        console.log(this.selectedFile);
+      }
+    },
+    isValid(eventFile) {
+      const file = eventFile.type;
+      if (file === 'image/jpg' || file === 'image/jpeg' || file === 'image/png') {
+        this.valid = true;
+      } else {
+        this.valid = false;
+        this.error = 'file type is not valid';
+      }
+      return this.valid;
     },
     async createPost() {
-      console.log(this.caption);
-      console.log(this.selectedFile);
-      this.res = await this.$apollo.mutate({
-        mutation: CREATEPOST,
-        variables: {
-          post: {
-            caption: this.caption,
-            image: this.selectedFile,
+      if (this.valid === true) {
+        console.log(this.caption);
+        console.log(this.selectedFile);
+        this.res = await this.$apollo.mutate({
+          mutation: CREATEPOST,
+          variables: {
+            post: {
+              caption: this.caption,
+              image: this.selectedFile,
+            },
           },
-        },
-      });
+        });
+      }
+
       console.log(this.res.data.createPost);
     },
   },
@@ -108,5 +126,12 @@ label {
   display: block;
   padding-bottom: 5px;
   font-weight: 600;
+}
+.form-error {
+  font-size: 10px;
+  color: red;
+  display: block;
+  height: 10px;
+  padding: 5px;
 }
 </style>
