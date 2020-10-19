@@ -4,45 +4,24 @@
       <a href="#">Foto Gallery</a>
       <a href="#">Logout</a>
     </div>
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <input ref="file" type="file" accept="image/*" />
-    <button @click="createPost">Submit</button>
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Post />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 // eslint-disable-next-line import/no-unresolved
-import HelloWorld from '@/components/HelloWorld.vue';
-
+import Post from '@/components/Post.vue';
 // eslint-disable-next-line import/no-unresolved
 import CREATEPOST from '@/graphql/createPost';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld,
+    Post,
   },
   data() {
-    return {
-      res: null,
-    };
-  },
-  methods: {
-    async createPost() {
-      console.log(this.$refs.file.files[0]);
-      this.res = await this.$apollo.mutate({
-        mutation: CREATEPOST,
-        variables: {
-          post: {
-            caption: 'cap',
-            image: this.$refs.file.files[0],
-          },
-        },
-      });
-      console.log(this.res.data.createPost);
-    },
+    return {};
   },
 };
 </script>
